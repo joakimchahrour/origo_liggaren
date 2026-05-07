@@ -5,72 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <h2>Welcome to Origo</h2>
-    <p>Hi! I am Origo Liggaren. I have left the physical world and transcended into digital land.</p>
-    <p>Thank you for working at Origo, you keep this place running! Please enter your information for the BGC below before you start your shift.</p>
-    <h2>Worker Time Portal</h2>
-    <div>
-      <p>Name:</p>
-      <input type="text" id="worker-name">
-      <p><br>Date:</p>
-      <input type="date" id="work-date">
-      <p>Start:</p>
-      <input type="time" id="start" onchange="calculate()">
-      <p>End:</p>
-      <input type="time" id="end" onchange="calculate()">
-      <p>Today you have worked for: <span id="result">…</span>.</p>
-      <p>DON’T FORGET TO HIT THE SUBMIT BUTTON BELLOW!</p>
-      <button onclick="submitToGoogle()">Submit Hours</button>
-      <p id="status"></p>
+    <div style="padding: 1cm; max-width: 600px; margin: auto; font-family: sans-serif; min-height: 100vh;">
+      <script>
+        
+            const sheetUrl = 'https://script.google.com/macros/s/AKfycbyVdopdd5Pho2CPhnxWjsYSVeDEMmFveDeNSxoP1IOYx1cLekvrzVrKwoMLGa2te0kg1w/exec';
+        
+            function calculate() {
+              const start = document.getElementById('start').value;
+              const end = document.getElementById('end').value;
+              if (start && end) {
+                const [sH, sM] = start.split(':').map(Number);
+                const [eH, eM] = end.split(':').map(Number);
+                let diff = (eH * 60 + eM) - (sH * 60 + sM);
+                if (diff < 0) diff += 1440;
+                document.getElementById('result').innerText = Math.floor(diff/60) + 'h ' + (diff%60) + 'm';
+                return document.getElementById('result').innerText;
+              }
+              return '';
+            }
+        
+            async function submitToGoogle() {
+              const status = document.getElementById('status');
+              const payload = {
+                name: document.getElementById('worker-name').value,
+                role: document.getElementById('barlag').value, 
+                date: document.getElementById('work-date').value,
+                start: document.getElementById('start').value,
+                end: document.getElementById('end').value,
+                duration: calculate()
+              };
+        
+              if (!payload.name || !payload.date || !payload.start || !payload.role) {
+                alert('Please fill in all fields (Name, Barlag, Date, and Start time).');
+                return;
+              }
+        
+              status.innerText = 'Submitting...';
+        
+              try {
+                await fetch(sheetUrl, {
+                  method: 'POST',
+                  mode: 'no-cors', 
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload)
+                });
+                status.innerText = '✅ Hours submitted successfully!';
+              } catch (error) {
+                status.innerText = '❌ Error submitting. Try again.';
+              }
+            }
+          
+      </script>
+      <div style="background: #FF0000; color: white; padding: 20px; border-radius: 10px; border: 5px solid #f1f505; max-width: 500px; margin: 0 auto 20px auto; font-family: sans-serif;">
+        <h2>OBS!</h2>
+        <p><strong>This is a test of a new system. If something happens, we still need your information. So please, for legal reasons, fill in the physical book as well. Thank you!</strong></p>
+      </div>
+      <h2>Welcome to Origo</h2>
+      <p>Hi! I am Origo Liggaren. I have left the physical world and transcended into digital land.</p>
+      <p>Thank you for working at Origo, you keep this place running! Please enter your information for the BGC below.</p>
+      <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; border: 5px solid #ddd; max-width: 500px; margin: auto; font-family: sans-serif;">
+        <h2>Worker Time Portal</h2>
+        <p><strong>Name:</strong></p>
+        <input type="text" id="worker-name" style="width: 100%; margin-bottom: 10px; padding: 8px; box-sizing: border-box;">
+        <p><strong>Barlag:</strong></p>
+        <select id="barlag" style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 10px;"><option value>Select your Barlag</option><option value="MhetAB">Barlag MHetAB</option><option value="F">Barlag F</option><option value="Kelix">Barlag Kelix</option><option value="MEGABH">Barlag MEGA BH</option><option value="#FEST">Barlag #Fest</option></select>
+        <p><strong>Date:</strong></p>
+        <input type="date" id="work-date" style="width: 100%; margin-bottom: 15px; padding: 8px; box-sizing: border-box;">
+        <p><strong>Start</strong>:</p>
+        <input type="time" id="start" onchange="calculate()" style="padding: 5px;">
+        <p><strong>End</strong>:</p>
+        <input type="time" id="end" onchange="calculate()" style="padding: 5px;">
+        <p style="font-size: 0.9em; color: #666; margin-top: 15px;">DON’T FORGET TO HIT THE SUBMIT BUTTON!</p>
+        <div style="font-weight: bold; font-size: 1.2em; margin-bottom: 15px;">Total Duration: <span id="result">—</span></div>
+        <button onclick="submitToGoogle()" style="background: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold;">Submit Hours</button>
+        <p id="status" style="text-align: center; margin-top: 10px; font-weight: bold;"></p>
+      </div>
     </div>
-    <script>
-      
-        const sheetUrl = 'https://script.google.com/macros/s/AKfycbzFzkBHzw2926EDIwKSpwj7GulCPpRFuaUJ_bQtKvfUyIvH1a5ZQTiZocuUCZvzGShfmw/exec';
-      
-        function calculate() {
-          const start = document.getElementById('start').value;
-          const end = document.getElementById('end').value;
-          if (start && end) {
-            const [sH, sM] = start.split(':').map(Number);
-            const [eH, eM] = end.split(':').map(Number);
-            let diff = (eH * 60 + eM) - (sH * 60 + sM);
-            if (diff < 0) diff += 1440;
-            document.getElementById('result').innerText = Math.floor(diff/60) + 'h ' + (diff%60) + 'm';
-            return document.getElementById('result').innerText;
-          }
-          return '';
-        }
-      
-        async function submitToGoogle() {
-          const status = document.getElementById('status');
-          const payload = {
-            name: document.getElementById('worker-name').value,
-            date: document.getElementById('work-date').value,
-            start: document.getElementById('start').value,
-            end: document.getElementById('end').value,
-            duration: calculate()
-          };
-      
-          if (!payload.name || !payload.date || !payload.start) {
-            alert('Please fill in all fields.');
-            return;
-          }
-      
-          status.innerText = 'Submitting...';
-      
-          try {
-            // We use 'no-cors' because Google Sheets doesn't send back standard headers
-            await fetch(sheetUrl, {
-              method: 'POST',
-              mode: 'no-cors', 
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            status.innerText = '✅ Hours submitted successfully!';
-          } catch (error) {
-            status.innerText = '❌ Error submitting. Try again.';
-          }
-        }
-    </script>
   </body>
 </html>
