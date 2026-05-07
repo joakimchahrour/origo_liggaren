@@ -10,24 +10,46 @@
         
             const sheetUrl = 'https://script.google.com/macros/s/AKfycbyVdopdd5Pho2CPhnxWjsYSVeDEMmFveDeNSxoP1IOYx1cLekvrzVrKwoMLGa2te0kg1w/exec';
         
+            // 1. Auto-fill the date when the page loads
+            window.onload = function() {
+              const today = new Date().toISOString().split('T')[0];
+              const dateInput = document.getElementById('work-date');
+              if (dateInput) {
+                dateInput.value = today;
+              }
+            };
+        
             function calculate() {
               const start = document.getElementById('start').value;
               const end = document.getElementById('end').value;
+              const resultSpan = document.getElementById('result');
+              
               if (start && end) {
                 const [sH, sM] = start.split(':').map(Number);
                 const [eH, eM] = end.split(':').map(Number);
                 let diff = (eH * 60 + eM) - (sH * 60 + sM);
-                if (diff < 0) diff += 1440;
-                document.getElementById('result').innerText = Math.floor(diff/60) + 'h ' + (diff%60) + 'm';
-                return document.getElementById('result').innerText;
+                
+                if (diff < 0) diff += 1440; // Handles shifts passing midnight
+                
+                const hours = Math.floor(diff/60);
+                const mins = diff % 60;
+                const timeString = hours + 'h ' + mins + 'm';
+                
+                resultSpan.innerText = timeString;
+                return timeString;
               }
               return '';
             }
         
             async function submitToGoogle() {
               const status = document.getElementById('status');
+              
+              // 2. Capture and Capitalize the name automatically
+              const rawName = document.getElementById('worker-name').value;
+              const capitalizedName = rawName.toUpperCase().trim();
+        
               const payload = {
-                name: document.getElementById('worker-name').value,
+                name: capitalizedName,
                 role: document.getElementById('barlag').value, 
                 date: document.getElementById('work-date').value,
                 start: document.getElementById('start').value,
@@ -35,8 +57,9 @@
                 duration: calculate()
               };
         
+              // Validation
               if (!payload.name || !payload.date || !payload.start || !payload.role) {
-                alert('Please fill in all fields (Name, Barlag, Date, and Start time).');
+                alert('Please fill in Name, Barlag, and Times!');
                 return;
               }
         
@@ -50,6 +73,8 @@
                   body: JSON.stringify(payload)
                 });
                 status.innerText = '✅ Hours submitted successfully!';
+                // Optional: Clear name after success so the next person starts fresh
+                document.getElementById('worker-name').value = '';
               } catch (error) {
                 status.innerText = '❌ Error submitting. Try again.';
               }
@@ -58,7 +83,7 @@
       </script>
       <div style="background: #FF0000; color: white; padding: 20px; border-radius: 10px; border: 5px solid #f1f505; max-width: 500px; margin: 0 auto 20px auto; font-family: sans-serif;">
         <h2>OBS!</h2>
-        <p><strong>This is a test of a new system. If something happens, we still need your information. So please, for legal reasons, fill in the physical book as well. Thank you!</strong></p>
+        <p><strong>This is a test of a new system. If something happens we still need your information. So please, for legal reasons, fill in the physical book as well. Thank you!</strong></p>
       </div>
       <h2>Welcome to Origo</h2>
       <p>Hi! I am Origo Liggaren. I have left the physical world and transcended into digital land.</p>
@@ -66,11 +91,11 @@
       <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; border: 5px solid #ddd; max-width: 500px; margin: auto; font-family: sans-serif;">
         <h2>Worker Time Portal</h2>
         <p><strong>Name:</strong></p>
-        <input type="text" id="worker-name" style="width: 100%; margin-bottom: 10px; padding: 8px; box-sizing: border-box;">
+        <input type="text" id="worker-name" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px;">
         <p><strong>Barlag:</strong></p>
-        <select id="barlag" style="width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 10px;"><option value>Select your Barlag</option><option value="MhetAB">Barlag MHetAB</option><option value="F">Barlag F</option><option value="Kelix">Barlag Kelix</option><option value="MEGABH">Barlag MEGA BH</option><option value="#FEST">Barlag #Fest</option></select>
+        <select id="barlag" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px;"><option value>Select your Barlag</option><option value="MhetAB">Barlag MHetAB</option><option value="F">Barlag F</option><option value="Kelix">Barlag Kelix</option><option value="MEGABH">Barlag MEGA BH</option><option value="#FEST">Barlag #Fest</option></select>
         <p><strong>Date:</strong></p>
-        <input type="date" id="work-date" style="width: 100%; margin-bottom: 15px; padding: 8px; box-sizing: border-box;">
+        <input type="date" id="work-date" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px;">
         <p><strong>Start</strong>:</p>
         <input type="time" id="start" onchange="calculate()" style="padding: 5px;">
         <p><strong>End</strong>:</p>
