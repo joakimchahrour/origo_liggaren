@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <h2>Welcome to Origo</h2>
+    <p>Hi! I am Origo Liggaren. I have left the physical world and transcended into digital land.</p>
+    <p>Thank you for working at Origo, you keep this place running! Please enter your information for the BGC below before you start your shift.</p>
+    <h2>Worker Time Portal</h2>
+    <div>
+      <p>Name:</p>
+      <input type="text" id="worker-name">
+      <p><br>Date:</p>
+      <input type="date" id="work-date">
+      <p>Start:</p>
+      <input type="time" id="start" onchange="calculate()">
+      <p>End:</p>
+      <input type="time" id="end" onchange="calculate()">
+      <p>Today you have worked for: <span id="result">…</span>.</p>
+      <p>DON’T FORGET TO HIT THE SUBMIT BUTTON BELLOW!</p>
+      <button onclick="submitToGoogle()">Submit Hours</button>
+      <p id="status"></p>
+    </div>
+    <script>
+      
+        const sheetUrl = 'https://script.google.com/macros/s/AKfycbzFzkBHzw2926EDIwKSpwj7GulCPpRFuaUJ_bQtKvfUyIvH1a5ZQTiZocuUCZvzGShfmw/exec';
+      
+        function calculate() {
+          const start = document.getElementById('start').value;
+          const end = document.getElementById('end').value;
+          if (start && end) {
+            const [sH, sM] = start.split(':').map(Number);
+            const [eH, eM] = end.split(':').map(Number);
+            let diff = (eH * 60 + eM) - (sH * 60 + sM);
+            if (diff < 0) diff += 1440;
+            document.getElementById('result').innerText = Math.floor(diff/60) + 'h ' + (diff%60) + 'm';
+            return document.getElementById('result').innerText;
+          }
+          return '';
+        }
+      
+        async function submitToGoogle() {
+          const status = document.getElementById('status');
+          const payload = {
+            name: document.getElementById('worker-name').value,
+            date: document.getElementById('work-date').value,
+            start: document.getElementById('start').value,
+            end: document.getElementById('end').value,
+            duration: calculate()
+          };
+      
+          if (!payload.name || !payload.date || !payload.start) {
+            alert('Please fill in all fields.');
+            return;
+          }
+      
+          status.innerText = 'Submitting...';
+      
+          try {
+            // We use 'no-cors' because Google Sheets doesn't send back standard headers
+            await fetch(sheetUrl, {
+              method: 'POST',
+              mode: 'no-cors', 
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            status.innerText = '✅ Hours submitted successfully!';
+          } catch (error) {
+            status.innerText = '❌ Error submitting. Try again.';
+          }
+        }
+    </script>
+  </body>
+</html>
