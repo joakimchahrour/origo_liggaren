@@ -1,7 +1,7 @@
 #import "styles.typ": *
 #import "script.typ": *
 
-#let sheet_url = "https://script.google.com/macros/s/AKfycbyVdopdd5Pho2CPhnxWjsYSVeDEMmFveDeNSxoP1IOYx1cLekvrzVrKwoMLGa2te0kg1w/exec"
+#let sheet_url = "https://script.google.com/macros/s/AKfycbxxFWpMLJNgqHousfW0MiXgKxQSbhcCwrnjOXgYCp8EhI9OrAyhIUqAb4LbZ7nuvZmIVg/exec"
 
 #show: page_wrapper
 
@@ -25,6 +25,8 @@ Thank you for working at Origo, you keep this place running! Please enter your i
   #html.elem("h2", [Worker Time Portal])
   
   *Name:* #html.elem("input", attrs: (type: "text", id: "worker-name", style: input_style))
+
+  *UMU-ID:* #html.elem("input", attrs: (type: "type", id: "umu", style: input_style))
   
   *Barlag:* #html.elem("select", attrs: (id: "barlag", style: input_style), [
     #html.elem("option", attrs: (value: ""), "Select your Barlag")
@@ -33,6 +35,7 @@ Thank you for working at Origo, you keep this place running! Please enter your i
     #html.elem("option", attrs: (value: "Kelix"), "Barlag Kelix")
     #html.elem("option", attrs: (value: "MEGABH"), "Barlag MEGA BH")
     #html.elem("option", attrs: (value: "#FEST"), "Barlag #Fest")
+    #html.elem("option", attrs: (value: "KC"), "KC")
   ])
   
   *Date:* #html.elem("input", attrs: (type: "date", id: "work-date", style: input_style)) 
