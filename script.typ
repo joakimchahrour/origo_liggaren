@@ -22,13 +22,14 @@
         let diff = (eH * 60 + eM) - (sH * 60 + sM);
         
         if (diff < 0) diff += 1440; // Handles shifts passing midnight
-        
+
         const hours = Math.floor(diff/60);
         const mins = diff % 60;
         const timeString = hours + 'h ' + mins + 'm';
-        
         resultSpan.innerText = timeString;
-        return timeString;
+
+        total_duration = diff / 60;
+        return total_duration;
       }
       return '';
     }
@@ -42,6 +43,7 @@
 
       const payload = {
         name: capitalizedName,
+        umu: document.getElementById('umu').value,
         role: document.getElementById('barlag').value, 
         date: document.getElementById('work-date').value,
         start: document.getElementById('start').value,
