@@ -30,13 +30,13 @@
                 let diff = (eH * 60 + eM) - (sH * 60 + sM);
                 
                 if (diff < 0) diff += 1440; // Handles shifts passing midnight
-                
+        
                 const hours = Math.floor(diff/60);
                 const mins = diff % 60;
                 const timeString = hours + 'h ' + mins + 'm';
-                
                 resultSpan.innerText = timeString;
-                return timeString;
+                
+                return diff;
               }
               return '';
             }
