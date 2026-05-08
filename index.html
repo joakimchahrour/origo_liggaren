@@ -35,8 +35,9 @@
                 const mins = diff % 60;
                 const timeString = hours + 'h ' + mins + 'm';
                 resultSpan.innerText = timeString;
-                
-                return diff;
+        
+                total_duration = diff / 60;
+                return total_duration;
               }
               return '';
             }
