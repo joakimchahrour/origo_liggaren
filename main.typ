@@ -55,3 +55,5 @@ Thank you for working at Origo, you keep this place running! Please enter your i
   #html.elem("p", attrs: (id: "status", style: "text-align: center; margin-top: 10px; font-weight: bold;"), [])
 ])
 
+= Origo Liggaren is open source!
+If you are interested on how Origo liggaren is made or want to contribute please visit the GitHub repository: https://github.com/joakimchahrour/origo_liggaren. 
