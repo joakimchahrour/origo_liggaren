@@ -1,5 +1,5 @@
 #let page_wrapper(content) = html.elem("div", attrs: (
-  style: "padding: 1cm; max-width: 600px; margin: auto; font-family: sans-serif; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+  style: "padding: 1cm; max-width: auto; margin: auto; font-family: sans-serif; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
 ), content)
 
 #let form_card(content) = html.elem("div", attrs: (
