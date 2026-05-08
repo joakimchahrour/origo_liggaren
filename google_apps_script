@@ -9,12 +9,13 @@ function doPost(e) {
   
   if (!sheet) {
     sheet = ss.insertSheet(roleName);
-    sheet.appendRow(["Name", "Date", "Start", "End", "Duration"]);
+    sheet.appendRow(["Name", "UMU-ID", "Date", "Start", "End", "Duration"]);
     sheet.getRange("1:1").setFontWeight("bold").setBackground("#eeeeee");
   }
   
   sheet.appendRow([
-    data.name, 
+    data.name,
+    data.umu, 
     data.date, 
     data.start, 
     data.end, 
