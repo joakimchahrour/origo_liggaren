@@ -8,7 +8,7 @@
     <div style="padding: 1cm; max-width: auto; margin: auto; font-family: sans-serif; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
       <script>
         
-            const sheetUrl = 'https://script.google.com/macros/s/AKfycbyVdopdd5Pho2CPhnxWjsYSVeDEMmFveDeNSxoP1IOYx1cLekvrzVrKwoMLGa2te0kg1w/exec';
+            const sheetUrl = 'https://script.google.com/macros/s/AKfycbxxFWpMLJNgqHousfW0MiXgKxQSbhcCwrnjOXgYCp8EhI9OrAyhIUqAb4LbZ7nuvZmIVg/exec';
         
             // 1. Auto-fill the date when the page loads
             window.onload = function() {
@@ -50,6 +50,7 @@
         
               const payload = {
                 name: capitalizedName,
+                umu: document.getElementById('umu').value,
                 role: document.getElementById('barlag').value, 
                 date: document.getElementById('work-date').value,
                 start: document.getElementById('start').value,
@@ -92,8 +93,10 @@
         <h2>Worker Time Portal</h2>
         <p><strong>Name:</strong></p>
         <input type="text" id="worker-name" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px;">
+        <p><strong>UMU-ID:</strong></p>
+        <input type="type" id="umu" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px;">
         <p><strong>Barlag:</strong></p>
-        <select id="barlag" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px;"><option value>Select your Barlag</option><option value="MhetAB">Barlag MHetAB</option><option value="F">Barlag F</option><option value="Kelix">Barlag Kelix</option><option value="MEGABH">Barlag MEGA BH</option><option value="#FEST">Barlag #Fest</option></select>
+        <select id="barlag" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px;"><option value>Select your Barlag</option><option value="MhetAB">Barlag MHetAB</option><option value="F">Barlag F</option><option value="Kelix">Barlag Kelix</option><option value="MEGABH">Barlag MEGA BH</option><option value="#FEST">Barlag #Fest</option><option value="KC">KC</option></select>
         <p><strong>Date:</strong></p>
         <input type="date" id="work-date" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px;">
         <p><strong>Start</strong>:</p>
