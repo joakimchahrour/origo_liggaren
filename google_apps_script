@@ -1,0 +1,25 @@
+function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var data = JSON.parse(e.postData.contents);
+  
+  // This will be "mhetab", "f", "kelix", etc.
+  var roleName = data.role || "Unassigned"; 
+  
+  var sheet = ss.getSheetByName(roleName);
+  
+  if (!sheet) {
+    sheet = ss.insertSheet(roleName);
+    sheet.appendRow(["Name", "Date", "Start", "End", "Duration"]);
+    sheet.getRange("1:1").setFontWeight("bold").setBackground("#eeeeee");
+  }
+  
+  sheet.appendRow([
+    data.name, 
+    data.date, 
+    data.start, 
+    data.end, 
+    data.duration
+  ]);
+  
+  return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+}
