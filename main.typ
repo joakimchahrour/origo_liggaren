@@ -1,6 +1,8 @@
 #import "styles.typ": *
 #import "script.typ": *
 
+#animation_styles
+
 #let sheet_url = "https://script.google.com/macros/s/AKfycbxxFWpMLJNgqHousfW0MiXgKxQSbhcCwrnjOXgYCp8EhI9OrAyhIUqAb4LbZ7nuvZmIVg/exec"
 
 #show: page_wrapper
@@ -26,7 +28,7 @@ Thank you for working at Origo, you keep this place running! Please enter your i
   
   *Name:* #html.elem("input", attrs: (type: "text", id: "worker-name", style: input_style))
 
-  *UMU-ID:* #html.elem("input", attrs: (type: "type", id: "umu", style: input_style))
+  *UMU-ID (xxxxNNNN):* #html.elem("input", attrs: (type: "text", id: "umu", style: input_style))
   
   *Barlag:* #html.elem("select", attrs: (id: "barlag", style: input_style), [
     #html.elem("option", attrs: (value: ""), "Select your Barlag")
@@ -38,7 +40,7 @@ Thank you for working at Origo, you keep this place running! Please enter your i
     #html.elem("option", attrs: (value: "KC"), "KC")
   ])
   
-  *Date:* #html.elem("input", attrs: (type: "date", id: "work-date", style: input_style)) 
+  *Start date:* #html.elem("input", attrs: (type: "date", id: "work-date", style: input_style)) 
   
   *Start*: #html.elem("input", attrs: (type: "time", id: "start", onchange: "calculate()", style: "padding: 5px;")) 
   

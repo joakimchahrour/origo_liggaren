@@ -34,44 +34,66 @@
       return '';
     }
 
-    async function submitToGoogle() {
-      const status = document.getElementById('status');
+      async function submitToGoogle() {
+        const status = document.getElementById('status');
+        const btn = event.target; // Identify the clicked button
       
-      // 2. Capture and Capitalize the name automatically
-      const rawName = document.getElementById('worker-name').value;
-      const capitalizedName = rawName.toUpperCase().trim();
+        // Capture name and capitalize 
+        const rawName = document.getElementById('worker-name').value;
+        const capitalizedName = rawName.toUpperCase().trim();
 
-      const payload = {
-        name: capitalizedName,
-        umu: document.getElementById('umu').value,
-        role: document.getElementById('barlag').value, 
-        date: document.getElementById('work-date').value,
-        start: document.getElementById('start').value,
-        end: document.getElementById('end').value,
-        duration: calculate()
-      };
+        // Caotyre umu-id and lower case
+        const rawUmU = document.getElementById('umu').value;
+        const lowercaseUmU = rawUmU.toLowerCase().trim();
+      
+        const payload = {
+          name: capitalizedName,
+          umu: lowercaseUmU,
+          role: document.getElementById('barlag').value, 
+          date: document.getElementById('work-date').value,
+          start: document.getElementById('start').value,
+          end: document.getElementById('end').value,
+          duration: calculate()
+        };
+      
+        if (!payload.name || !payload.date || !payload.start || !payload.role) {
+          alert('Please fill in Name, Barlag, and Times!'); 
+          return;
+        }
+      
+        // --- ANIMATION LOGIC ---
+        status.innerText = 'Sending to Origo... 🚀'; 
+        btn.classList.add('submitting');
+        btn.disabled = true;
+        btn.innerText = 'Submitting...';
+      
+        try {
+          await fetch(sheetUrl, {
+            method: 'POST',
+            mode: 'no-cors', 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }); 
+      
+          status.innerText = '✅ Hours submitted successfully!'; 
+          btn.classList.remove('submitting');
 
-      // Validation
-      if (!payload.name || !payload.date || !payload.start || !payload.role) {
-        alert('Please fill in Name, Barlag, and Times!');
-        return;
+          btn.disabled = false;
+          btn.innerText = 'Submit Hours';
+          btn.style.background = '#28a745'; // Turn green on success
+
+          setTimeout(() => {
+            btn.style.background = '#007bff';
+            status.innerText = ''; // Clears the success message
+          }, 3000);
+          
+          document.getElementById('worker-name').value = '';
+        } catch (error) {
+          status.innerText = '❌ Error submitting. Try again.'; 
+          btn.classList.remove('submitting');
+          btn.disabled = false;
+          btn.innerText = 'Submit Hours';
+        }
       }
-
-      status.innerText = 'Submitting...';
-
-      try {
-        await fetch(sheetUrl, {
-          method: 'POST',
-          mode: 'no-cors', 
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        status.innerText = '✅ Hours submitted successfully!';
-        // Optional: Clear name after success so the next person starts fresh
-        document.getElementById('worker-name').value = '';
-      } catch (error) {
-        status.innerText = '❌ Error submitting. Try again.';
-      }
-    }
   ")
 }
