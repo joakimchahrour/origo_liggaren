@@ -35,7 +35,7 @@ Thank you for working at Origo, you keep this place running! Please enter your i
     #html.elem("option", attrs: (value: "MhetAB"), "MHetAB")
     #html.elem("option", attrs: (value: "F"), "Barlag F")
     #html.elem("option", attrs: (value: "Kelix"), "Kelix")
-    #html.elem("option", attrs: (value: "MEGABH"), "MEGA BH")
+    #html.elem("option", attrs: (value: "MEGABH"), "MegaBH")
     #html.elem("option", attrs: (value: "#FEST"), "#Fest")
     #html.elem("option", attrs: (value: "KC"), "KC")
   ])
