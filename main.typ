@@ -32,11 +32,11 @@ Thank you for working at Origo, you keep this place running! Please enter your i
   
   *Barlag:* #html.elem("select", attrs: (id: "barlag", style: input_style), [
     #html.elem("option", attrs: (value: ""), "Select your Barlag")
-    #html.elem("option", attrs: (value: "MhetAB"), "Barlag MHetAB")
+    #html.elem("option", attrs: (value: "MhetAB"), "MHetAB")
     #html.elem("option", attrs: (value: "F"), "Barlag F")
-    #html.elem("option", attrs: (value: "Kelix"), "Barlag Kelix")
-    #html.elem("option", attrs: (value: "MEGABH"), "Barlag MEGA BH")
-    #html.elem("option", attrs: (value: "#FEST"), "Barlag #Fest")
+    #html.elem("option", attrs: (value: "Kelix"), "Kelix")
+    #html.elem("option", attrs: (value: "MEGABH"), "MEGA BH")
+    #html.elem("option", attrs: (value: "#FEST"), "#Fest")
     #html.elem("option", attrs: (value: "KC"), "KC")
   ])
   
