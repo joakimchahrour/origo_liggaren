@@ -1,26 +1,44 @@
 function doPost(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var data = JSON.parse(e.postData.contents);
-  
-  // This will be "mhetab", "f", "kelix", etc.
-  var roleName = data.role || "Unassigned"; 
-  
-  var sheet = ss.getSheetByName(roleName);
-  
-  if (!sheet) {
-    sheet = ss.insertSheet(roleName);
-    sheet.appendRow(["Name", "UMU-ID", "Date", "Start", "End", "Duration"]);
-    sheet.getRange("1:1").setFontWeight("bold").setBackground("#eeeeee");
+  // 1. SET A LOCK: Prevents two requests from writing at the exact same time
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(30000); // Wait up to 30 seconds
+    
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var data = JSON.parse(e.postData.contents);
+    var roleName = data.role || "Unassigned"; 
+    var sheet = ss.getSheetByName(roleName);
+    
+    if (!sheet) {
+      sheet = ss.insertSheet(roleName);
+      sheet.appendRow(["Name", "UMU-ID", "Date", "Start", "End", "Duration"]);
+    }
+    
+    // 2. DUPLICATE CHECK: Look at the last row added
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      var lastValues = sheet.getRange(lastRow, 1, 1, 6).getValues()[0];
+      // If Name, Date, and Start Time are identical to the last row, STOP HERE.
+      if (lastValues[0] == data.name && lastValues[2] == data.date && lastValues[3] == data.start) {
+        return ContentService.createTextOutput("Duplicate ignored");
+      }
+    }
+
+    // 3. APPEND DATA: If it's not a duplicate, add it.
+    sheet.appendRow([
+      data.name,
+      data.umu, 
+      data.date, 
+      data.start, 
+      data.end, 
+      data.duration
+    ]);
+    
+    return ContentService.createTextOutput("Success");
+    
+  } catch (err) {
+    return ContentService.createTextOutput("Error: " + err);
+  } finally {
+    lock.releaseLock(); // Always release the lock
   }
-  
-  sheet.appendRow([
-    data.name,
-    data.umu, 
-    data.date, 
-    data.start, 
-    data.end, 
-    data.duration
-  ]);
-  
-  return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
 }
