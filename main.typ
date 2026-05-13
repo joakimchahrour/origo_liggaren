@@ -3,13 +3,13 @@
 
 #animation_styles
 
-#let sheet_url = "https://script.google.com/macros/s/AKfycbxxFWpMLJNgqHousfW0MiXgKxQSbhcCwrnjOXgYCp8EhI9OrAyhIUqAb4LbZ7nuvZmIVg/exec"
+#let sheet_url = "https://script.google.com/macros/s/AKfycbw82zHS9LFQPix5U6M_yc3O7ZILtKx9D7iLKsCrkoLqtiZduQJ1xRvpJkg5EVplvSoRXw/exec"
 
 #show: page_wrapper
 
 #google_script(sheet_url)
 
-// Warning Box
+// Warning BoxtoLowerCase
 #html.elem("div", attrs: (style: "background: #FF0000; color: white; padding: 20px; border-radius: 10px; border: 5px solid #f1f505; max-width: 500px; margin: 0 auto 20px auto; font-family: sans-serif;"), [
   #html.elem("h2", [OBS!])
   *This is a test of a new system. If something happens we still need your information. So please, for legal reasons, fill in the physical book as well. Thank you!*
